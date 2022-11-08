@@ -4,7 +4,7 @@ import click
 from flask import Flask, current_app, g
 
 
-def get_db() -> g.db:
+def get_db():
     """
     Connect to the application's configured database. The connection
     is unique for each request and will be reused if this is called again.
@@ -18,7 +18,7 @@ def get_db() -> g.db:
         )
         g.db.row_factory = sqlite3.Row
 
-        return g.db
+    return g.db
 
 
 def close_db(err=None):
