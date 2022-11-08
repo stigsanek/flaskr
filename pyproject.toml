@@ -11,6 +11,8 @@ packages = [{include = "flaskr"}]
 python = "^3.8"
 flask = "^2.2.2"
 
+[tool.poetry.scripts]
+flaskr = "flaskr.scripts.main:main"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^5.0.4"
