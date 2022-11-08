@@ -5,6 +5,7 @@ description = "The basic blog app built in the Flask tutorial"
 authors = ["stigsanek <alexander.e.egorov@yandex.ru>"]
 license = "MIT"
 readme = "README.md"
+packages = [{include = "flaskr"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
