@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "flaskr"
+version = "0.1.0"
+description = "The basic blog app built in the Flask tutorial"
+authors = ["stigsanek <alexander.e.egorov@yandex.ru>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
