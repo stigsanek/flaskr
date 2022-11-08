@@ -1,3 +1,6 @@
+run:
+	flask --app flaskr --debug run
+
 install:
 	poetry install
 
