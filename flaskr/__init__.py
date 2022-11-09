@@ -11,9 +11,10 @@ def create_app(test_config: dict = None) -> Flask:
     :return:
     """
     app = Flask(__name__, instance_relative_config=True)
+    db_path = os.path.join(app.instance_path, "flaskr.sqlite")
     app.config.from_mapping(
         SECRET_KEY="dev",
-        DATABASE=os.path.join(app.instance_path, "flaskr.sqlite")
+        SQLALCHEMY_DATABASE_URI=f"sqlite:///{db_path}"
     )
 
     if test_config is None:
@@ -30,8 +31,13 @@ def create_app(test_config: dict = None) -> Flask:
         pass
 
     # register the database commands
-    from flaskr import db
+    from flaskr.db import db, close_db
+    import flaskr.models
     db.init_app(app)
+
+    with app.app_context():
+        db.create_all()
+    app.teardown_appcontext(close_db)
 
     from flaskr.views import auth, blog
     # apply the blueprints to the app

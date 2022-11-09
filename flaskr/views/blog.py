@@ -3,7 +3,8 @@ from flask import (
 )
 from werkzeug.exceptions import abort
 
-from flaskr.db import get_db
+from flaskr.db import db
+from flaskr.models import Post
 from flaskr.views.auth import login_required
 
 bp = Blueprint(name="blog", import_name=__name__)
@@ -16,16 +17,11 @@ def index():
 
     :return: response
     """
-    db = get_db()
-    posts = db.execute(
-        "SELECT p.id, title, body, created, author_id, username "
-        "FROM post p JOIN user u ON p.author_id = u.id ORDER BY created DESC"
-    ).fetchall()
-
+    posts = db.session.query(Post).all()
     return render_template("blog/index.html", posts=posts)
 
 
-def get_post(post_id: int, check_author: bool = True) -> dict:
+def get_post(post_id: int, check_author: bool = True) -> Post:
     """
     Get a post and its author by id.
     Checks that the id exists and
@@ -37,16 +33,11 @@ def get_post(post_id: int, check_author: bool = True) -> dict:
     :raise 404: if a post with the given id doesn't exist
     :raise 403: if the current user isn't the author
     """
-    db = get_db()
-    post = db.execute(
-        "SELECT p.id, title, body, created, author_id, username "
-        "FROM post p JOIN user u ON p.author_id = u.id WHERE p.id = ?",
-        (post_id,)
-    ).fetchone()
+    post = db.session.query(Post).filter(Post.post_id == post_id).first()
 
     if post is None:
         abort(404, f"Post id {post_id} doesn't exist.")
-    if check_author and post["author_id"] != g.user["id"]:
+    if check_author and post.author_id != g.user.user_id:
         abort(403)
 
     return post
@@ -69,12 +60,10 @@ def create():
             error = "Title is required."
 
         if error is None:
-            db = get_db()
-            db.execute(
-                "INSERT INTO post (title, body, author_id) VALUES (?, ?, ?)",
-                (title, body, g.user['id'])
-            )
-            db.commit()
+            db.session.add(Post(
+                author_id=g.user.user_id, title=title, body=body
+            ))
+            db.session.commit()
             return redirect(url_for("blog.index"))
 
         flash(error)
@@ -102,12 +91,11 @@ def update(post_id: int):
             error = "Title is required."
 
         if error is None:
-            db = get_db()
-            db.execute(
-                "UPDATE post SET title = ?, body = ? WHERE id = ?",
-                (title, body, post_id)
-            )
-            db.commit()
+            post = get_post(post_id)
+            post.title = title
+            post.body = body
+
+            db.session.commit()
             return redirect(url_for("blog.index"))
 
         flash(error)
@@ -126,9 +114,8 @@ def delete(post_id: int):
     :param post_id:
     :return: response
     """
-    get_post(post_id)
-    db = get_db()
-    db.execute("DELETE FROM post WHERE id = ?", (post_id,))
-    db.commit()
+    post = get_post(post_id)
+    db.session.delete(post)
+    db.session.commit()
 
     return redirect(url_for("blog.index"))
