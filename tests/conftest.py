@@ -2,6 +2,7 @@ import os
 import tempfile
 
 import pytest
+from werkzeug.security import generate_password_hash
 
 from flaskr import create_app
 from flaskr.db import db
@@ -24,17 +25,17 @@ def app():
         "SQLALCHEMY_DATABASE_URI": f"sqlite:///{db_path}"
     })
 
-    user = User("test", "pbkdf2:sha256:50000$TCI4GzcX$0de171a4f4dac32e3364c7"
-                        "ddc7c14f3e2fa61f2d17574483f7ffbb431b4acb2f")
-    post = Post(author_id=1, title="test title", body="test body")
-
     # create the database and load test data
     db.init_app(app)
 
     with app.app_context():
         db.create_all()
-        db.session.add(user)
-        db.session.add(post)
+        db.session.add(
+            User("test", generate_password_hash("test"))
+        )
+        db.session.add(
+            Post(author_id=1, title="test title", body="test body")
+        )
         db.session.commit()
 
     yield app
@@ -53,17 +54,6 @@ def client(app):
     :return: test client
     """
     return app.test_client()
-
-
-@pytest.fixture
-def runner(app):
-    """
-    A test runner for the app's Click commands
-
-    :param app: app instance
-    :return: test cli runner
-    """
-    return app.test_cli_runner()
 
 
 class AuthActions:
