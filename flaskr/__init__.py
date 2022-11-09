@@ -32,7 +32,7 @@ def create_app(test_config: dict = None) -> Flask:
 
     # register the database commands
     from flaskr.db import db, close_db
-    import flaskr.models
+    import flaskr.models # noqa F401
     db.init_app(app)
 
     with app.app_context():

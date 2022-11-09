@@ -49,7 +49,7 @@ def load_logged_in_user():
 
 
 @bp.route("/register", methods=("GET", "POST"))
-def register():
+def register():  # noqa C901
     """
     Register a new user.
     Validates that the username is not already taken.
