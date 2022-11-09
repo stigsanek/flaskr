@@ -18,7 +18,7 @@ def login_required(view):
     :return:
     """
 
-    @wraps
+    @wraps(view)
     def wrapper(*args, **kwargs):
         if g.user is None:
             return redirect(url_for("auth.login"))
