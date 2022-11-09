@@ -1,6 +1,9 @@
+from datetime import datetime
+
 import pytest
 
-from flaskr.db import get_db
+from flaskr.db import db
+from flaskr.models import Post
 
 
 def test_index(client, auth):
@@ -19,7 +22,7 @@ def test_index(client, auth):
     resp = client.get("/")
     assert "test title" in resp.text
     assert "test body" in resp.text
-    assert "by test on 2022-11-09" in resp.text
+    assert f"by test on {datetime.now().strftime('%Y-%m-%d')}" in resp.text
     assert 'href="/create"' in resp.text
     assert 'href="/1/update"' in resp.text
 
@@ -50,9 +53,9 @@ def test_author_required(app, client, auth):
     :return:
     """
     with app.app_context():
-        db = get_db()
-        db.execute("UPDATE post SET author_id = 2 WHERE id = 1")
-        db.commit()
+        post = db.session.query(Post).filter(Post.post_id == "1").first()
+        post.author_id = 2
+        db.session.commit()
 
     auth.login()
     # current user can't modify other user's post
@@ -77,8 +80,7 @@ def test_create(app, client, auth):
     client.post("/create", data={"title": "test", "body": "test"})
 
     with app.app_context():
-        db = get_db()
-        count = db.execute("SELECT COUNT(id) FROM post").fetchone()[0]
+        count = len(db.session.query(Post).all())
         assert count == 2
 
 
@@ -95,10 +97,9 @@ def test_update(app, client, auth):
     client.post("/1/update", data={"title": "title", "body": "body"})
 
     with app.app_context():
-        db = get_db()
-        post = db.execute("SELECT * FROM post WHERE id = 1").fetchone()
-        assert post["title"] == "title"
-        assert post["body"] == "body"
+        post = db.session.query(Post).filter(Post.post_id == "1").first()
+        assert post.title == "title"
+        assert post.body == "body"
 
 
 @pytest.mark.parametrize(
@@ -133,6 +134,5 @@ def test_delete(app, client, auth):
     assert resp.headers["Location"] == "/"
 
     with app.app_context():
-        db = get_db()
-        post = db.execute("SELECT * FROM post WHERE id = 1").fetchone()
+        post = db.session.query(Post).filter(Post.post_id == "1").first()
         assert post is None

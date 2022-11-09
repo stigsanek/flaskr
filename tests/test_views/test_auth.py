@@ -1,7 +1,8 @@
 import pytest
 from flask import g, session
 
-from flaskr.db import get_db
+from flaskr.db import db
+from flaskr.models import User
 
 
 def test_register(app, client):
@@ -24,8 +25,7 @@ def test_register(app, client):
 
     # test that the user was inserted into the database
     with app.app_context():
-        db = get_db()
-        user = db.execute("SELECT * FROM user WHERE username = 'a'").fetchone()
+        user = db.session.query(User).filter(User.username == "a").first()
         assert user is not None
 
 
@@ -59,22 +59,18 @@ def test_register_validate_input(
     assert msg in resp.text
 
 
-def test_login(app, client):
+def test_login(client, auth):
     """
     Test for login user
 
-    :param app: app instance
     :param client: test client
+    :param auth: AuthActions instance
     :return:
     """
     # test that viewing the page renders without template errors
     assert client.get("/auth/login").status_code == 200
 
-    # test that successful login redirects to the index page
-    resp = client.post(
-        "/auth/login",
-        data={"username": "test", "password": "test"}
-    )
+    resp = auth.login()
     assert resp.headers["Location"] == "/"
 
     # login request set the user_id in the session
@@ -82,7 +78,7 @@ def test_login(app, client):
     with client:
         client.get("/")
         assert session["user_id"] == 1
-        assert g.user["username"] == "test"
+        assert g.user.username == "test"
 
 
 @pytest.mark.parametrize(
@@ -93,7 +89,7 @@ def test_login(app, client):
     )
 )
 def test_login_validate_input(
-    client,
+    auth,
     username: str,
     password: str,
     msg: str
@@ -101,16 +97,13 @@ def test_login_validate_input(
     """
     Test for validation form on login user
 
-    :param client: test client
+    :param auth: AuthActions instance
     :param username: username
     :param password: password
     :param msg: err message
     :return:
     """
-    resp = client.post(
-        "/auth/login",
-        data={"username": username, "password": password}
-    )
+    resp = auth.login(username, password)
     assert msg in resp.text
 
 

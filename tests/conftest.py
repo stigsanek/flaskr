@@ -4,10 +4,8 @@ import tempfile
 import pytest
 
 from flaskr import create_app
-from flaskr.db import get_db, init_db
-
-with open(os.path.join(os.path.dirname(__file__), "data.sql"), "rb") as f:
-    data_sql = f.read().decode('utf8')
+from flaskr.db import db
+from flaskr.models import User, Post
 
 
 @pytest.fixture
@@ -21,12 +19,23 @@ def app():
     db_fd, db_path = tempfile.mkstemp()
 
     # create the app with common test config
-    app = create_app({"TESTING": True, "DATABASE": db_path})
+    app = create_app({
+        "TESTING": True,
+        "SQLALCHEMY_DATABASE_URI": f"sqlite:///{db_path}"
+    })
+
+    user = User("test", "pbkdf2:sha256:50000$TCI4GzcX$0de171a4f4dac32e3364c7"
+                        "ddc7c14f3e2fa61f2d17574483f7ffbb431b4acb2f")
+    post = Post(author_id=1, title="test title", body="test body")
 
     # create the database and load test data
+    db.init_app(app)
+
     with app.app_context():
-        init_db()
-        get_db().executescript(data_sql)
+        db.create_all()
+        db.session.add(user)
+        db.session.add(post)
+        db.session.commit()
 
     yield app
 
