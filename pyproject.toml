@@ -5,10 +5,20 @@ description = "The basic blog app built in the Flask tutorial"
 authors = ["stigsanek <alexander.e.egorov@yandex.ru>"]
 license = "MIT"
 readme = "README.md"
+packages = [{include = "flaskr"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+flask = "^2.2.2"
+flask-sqlalchemy = "^3.0.2"
 
+[tool.poetry.scripts]
+flaskr = "flaskr.scripts.run:main"
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^5.0.4"
+pytest = "^7.2.0"
+pytest-cov = "^4.0.0"
 
 [build-system]
 requires = ["poetry-core"]
