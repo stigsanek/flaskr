@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from flaskr import create_app
+from flaskr.cli import get_args
 
 
 def main():
@@ -8,8 +9,10 @@ def main():
 
     :return:
     """
+    args = get_args()
+
     app = create_app()
-    app.run()
+    app.run(host=args.host, port=args.port, debug=args.debug)
 
 
 if __name__ == "__main__":

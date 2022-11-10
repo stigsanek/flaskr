@@ -53,22 +53,36 @@ Finally, we can move on to using the project functionality!
 
 ## Usage
 
+### Run
+
 ```bash
 >> flaskr
 
  * Serving Flask app 'flaskr'
- * Debug mode: on
+ * Debug mode: off
 WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
  * Running on http://127.0.0.1:5000
 Press CTRL+C to quit
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: ***-***-***
-127.0.0.1 - - [10/Nov/2022 12:45:33] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [10/Nov/2022 12:45:33] "GET /static/style.css HTTP/1.1" 304 -
 ```
 
 Open [http://localhost:5000](http://localhost:5000) in your browser.
+
+### Help
+
+```bash
+>> flaskr -h
+
+usage: flaskr [-h] [--host HOST] [--port PORT] [--debug] [--no-debug]
+
+A basic blogging application.
+
+optional arguments:
+  -h, --help   show this help message and exit
+  --host HOST  the hostname to listen on
+  --port PORT  the port of the webserver
+  --debug      enable debug mode
+  --no-debug   disable debug mode
+```
 
 ## Development
 
