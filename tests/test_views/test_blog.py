@@ -77,7 +77,8 @@ def test_create(app, client, auth):
     :return:
     """
     auth.login()
-    client.post("/create", data={"title": "test", "body": "test"})
+    resp = client.post("/create", data={"title": "test", "body": "test"})
+    assert resp.headers["Location"] == "/"
 
     with app.app_context():
         count = len(db.session.query(Post).all())
@@ -94,7 +95,8 @@ def test_update(app, client, auth):
     :return:
     """
     auth.login()
-    client.post("/1/update", data={"title": "title", "body": "body"})
+    resp = client.post("/1/update", data={"title": "title", "body": "body"})
+    assert resp.headers["Location"] == "/"
 
     with app.app_context():
         post = db.session.query(Post).filter(Post.post_id == "1").first()

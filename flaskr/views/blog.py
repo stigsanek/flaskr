@@ -10,17 +10,6 @@ from flaskr.views.auth import login_required
 bp = Blueprint(name="blog", import_name=__name__)
 
 
-@bp.route("/")
-def index():
-    """
-    Show all the posts, most recent first
-
-    :return: response
-    """
-    posts = db.session.query(Post).all()
-    return render_template("blog/index.html", posts=posts)
-
-
 def get_post(post_id: int, check_author: bool = True) -> Post:
     """
     Get a post and its author by id.
@@ -43,12 +32,13 @@ def get_post(post_id: int, check_author: bool = True) -> Post:
     return post
 
 
-@bp.route("/create", methods=("GET", "POST"))
-@login_required
-def create():
+def post_wrapper(fn, template: str, post: Post = None):
     """
-    Create a new post for the current user
+    Views wrapper for create and update the post
 
+    :param fn: inner function
+    :param template: template for response
+    :param post: (optional) Post instance
     :return: response
     """
     if request.method == "POST":
@@ -60,15 +50,41 @@ def create():
             error = "Title is required."
 
         if error is None:
-            db.session.add(Post(
-                author_id=g.user.user_id, title=title, body=body
-            ))
+            fn(title, body, post)
             db.session.commit()
             return redirect(url_for("blog.index"))
 
         flash(error)
 
-    return render_template("blog/create.html")
+    return render_template(template, post=post)
+
+
+@bp.route("/")
+def index():
+    """
+    Show all the posts, most recent first
+
+    :return: response
+    """
+    posts = db.session.query(Post).all()
+    return render_template("blog/index.html", posts=posts)
+
+
+@bp.route("/create", methods=("GET", "POST"))
+@login_required
+def create():
+    """
+    Create a new post for the current user
+
+    :return: response
+    """
+
+    def inner(title: str, body: str, post: Post):
+        db.session.add(Post(
+            author_id=g.user.user_id, title=title, body=body
+        ))
+
+    return post_wrapper(fn=inner, template="blog/create.html")
 
 
 @bp.route("/<int:post_id>/update", methods=("GET", "POST"))
@@ -80,27 +96,13 @@ def update(post_id: int):
     :param post_id: post id
     :return: response
     """
-    post = get_post(post_id)
 
-    if request.method == "POST":
-        title = request.form.get("title")
-        body = request.form.get("body")
-        error = None
+    def inner(title: str, body: str, post: Post):
+        post.title = title
+        post.body = body
 
-        if not title:
-            error = "Title is required."
-
-        if error is None:
-            post = get_post(post_id)
-            post.title = title
-            post.body = body
-
-            db.session.commit()
-            return redirect(url_for("blog.index"))
-
-        flash(error)
-
-    return render_template("blog/update.html", post=post)
+    cur_post = get_post(post_id)
+    return post_wrapper(fn=inner, template="blog/update.html", post=cur_post)
 
 
 @bp.post("/<int:post_id>/delete")
