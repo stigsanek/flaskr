@@ -4,7 +4,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/0c82d66f6924f4b8b033/maintainability)](https://codeclimate.com/github/stigsanek/flaskr/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/0c82d66f6924f4b8b033/test_coverage)](https://codeclimate.com/github/stigsanek/flaskr/test_coverage)
 
-# Description
+## Description
 
 A basic blogging application. Users can register, log in, create posts, edit and delete their posts. You will be able to
 package and install the application on other computers.
