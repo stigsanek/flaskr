@@ -1,8 +1,8 @@
-# flaskr
+# Flaskr
 
-[![Github Actions Status](https://github.com/stigsanek/flaskr/workflows/python-ci/badge.svg)](https://github.com/stigsanek/flaskr/actions)
-[![Maintainability](https://api.codeclimate.com/v1/badges/0c82d66f6924f4b8b033/maintainability)](https://codeclimate.com/github/stigsanek/flaskr/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/0c82d66f6924f4b8b033/test_coverage)](https://codeclimate.com/github/stigsanek/flaskr/test_coverage)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/stigsanek/flaskr/python-ci)
+![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/stigsanek/flaskr)
+![Code Climate coverage](https://img.shields.io/codeclimate/coverage/stigsanek/flaskr)
 
 ## Description
 
