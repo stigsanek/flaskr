@@ -50,20 +50,16 @@ It remains to move to the directory and install the dependencies:
 
 ### Environment
 
-For the application to work, you need to create a file `.env` in the root of the project.
+For the application to work, you need to create a file `.env` in the root of the project:
 
 If you want to enable development mode:
 
 ```dotenv
-DATABASE_URL="sqlite:///flaskr.sqlite"
-```
-
-If you want to enable production mode:
-
-```dotenv
-ENV="pord"
 SECRET_KEY="your_key"
 DATABASE_URL="sqlite:///flaskr.sqlite"
+
+# If you want to enable debug mode
+FLASK_DEBUG=True
 ```
 
 Finally, we can move on to using the project functionality!
