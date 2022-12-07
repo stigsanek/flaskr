@@ -1,7 +1,6 @@
 from datetime import datetime
 
 import pytest
-
 from flaskr.db import db
 from flaskr.models import Post
 

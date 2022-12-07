@@ -1,13 +1,19 @@
 from functools import wraps
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint,
+    flash,
+    g,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
 )
-from sqlalchemy.exc import IntegrityError
-from werkzeug.security import check_password_hash, generate_password_hash
-
 from flaskr.db import db
 from flaskr.models import User
+from sqlalchemy.exc import IntegrityError
+from werkzeug.security import check_password_hash, generate_password_hash
 
 bp = Blueprint(name="auth", import_name=__name__, url_prefix="/auth")
 

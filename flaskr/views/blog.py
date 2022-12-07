@@ -1,11 +1,16 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
+    Blueprint,
+    flash,
+    g,
+    redirect,
+    render_template,
+    request,
+    url_for,
 )
-from werkzeug.exceptions import abort
-
 from flaskr.db import db
 from flaskr.models import Post
 from flaskr.views.auth import login_required
+from werkzeug.exceptions import abort
 
 bp = Blueprint(name="blog", import_name=__name__)
 

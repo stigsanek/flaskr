@@ -1,13 +1,9 @@
-import os
-import tempfile
-
 import pytest
-from werkzeug.security import generate_password_hash
-
 from flaskr import create_app
-from flaskr.db import db
 from flaskr.config import TestingConfig
-from flaskr.models import User, Post
+from flaskr.db import db
+from flaskr.models import Post, User
+from werkzeug.security import generate_password_hash
 
 
 @pytest.fixture

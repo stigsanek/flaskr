@@ -1,6 +1,5 @@
 import pytest
 from flask import g, session
-
 from flaskr.db import db
 from flaskr.models import User
 
