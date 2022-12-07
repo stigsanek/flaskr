@@ -1,14 +1,8 @@
 run:
-	flask --app flaskr --debug run
+	flask --app flaskr:create_app run
 
 install:
 	poetry install
-
-build:
-	poetry build
-
-publish:
-	poetry publish --dry-run
 
 lint:
 	poetry run flake8 flaskr tests

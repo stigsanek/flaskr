@@ -29,7 +29,7 @@ The project uses the Poetry manager. Poetry is a tool for dependency management 
 to declare the libraries your project depends on and it will manage (install/update) them for you. You can read more
 about this tool on [the official Poetry website](https://python-poetry.org/)
 
-### Package
+### Dependencies
 
 To work with the package, you need to clone the repository to your computer. This is done using the `git clone` command.
 Clone the project on the command line:
@@ -41,12 +41,29 @@ Clone the project on the command line:
 >> git@github.com:stigsanek/flaskr.git
 ```
 
-It remains to move to the directory and install the package:
+It remains to move to the directory and install the dependencies:
 
 ```bash
->> cd python-project-51
->> poetry build
->> python -m pip install --user dist/*.whl
+>> cd flaskr
+>> poetry install
+```
+
+### Environment
+
+For the application to work, you need to create a file `.env` in the root of the project.
+
+If you want to enable development mode:
+
+```dotenv
+DATABASE_URL="sqlite:///flaskr.sqlite"
+```
+
+If you want to enable production mode:
+
+```dotenv
+ENV="pord"
+SECRET_KEY="your_key"
+DATABASE_URL="sqlite:///flaskr.sqlite"
 ```
 
 Finally, we can move on to using the project functionality!
@@ -56,9 +73,9 @@ Finally, we can move on to using the project functionality!
 ### Run
 
 ```bash
->> flaskr
+>> flask --app flaskr:create_app run
 
- * Serving Flask app 'flaskr'
+ * Serving Flask app 'flaskr:create_app'
  * Debug mode: off
 WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
  * Running on http://127.0.0.1:5000
@@ -66,23 +83,6 @@ Press CTRL+C to quit
 ```
 
 Open [http://localhost:5000](http://localhost:5000) in your browser.
-
-### Help
-
-```bash
->> flaskr -h
-
-usage: flaskr [-h] [--host HOST] [--port PORT] [--debug] [--no-debug]
-
-A basic blogging application.
-
-optional arguments:
-  -h, --help   show this help message and exit
-  --host HOST  the hostname to listen on
-  --port PORT  the port of the webserver
-  --debug      enable debug mode
-  --no-debug   disable debug mode
-```
 
 ## Development
 

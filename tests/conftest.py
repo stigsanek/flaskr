@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash
 
 from flaskr import create_app
 from flaskr.db import db
+from flaskr.config import TestingConfig
 from flaskr.models import User, Post
 
 
@@ -16,14 +17,8 @@ def app():
 
     :return:
     """
-    # create a temporary file to isolate the database for each test
-    db_fd, db_path = tempfile.mkstemp()
-
     # create the app with common test config
-    app = create_app({
-        "TESTING": True,
-        "SQLALCHEMY_DATABASE_URI": f"sqlite:///{db_path}"
-    })
+    app = create_app(TestingConfig())
 
     # create the database and load test data
     db.init_app(app)
@@ -39,10 +34,6 @@ def app():
         db.session.commit()
 
     yield app
-
-    # close and remove the temporary database
-    os.close(db_fd)
-    os.unlink(db_path)
 
 
 @pytest.fixture

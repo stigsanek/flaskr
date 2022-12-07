@@ -1,4 +1,5 @@
 from flaskr import create_app
+from flaskr.config import TestingConfig
 
 
 def test_config():
@@ -7,5 +8,4 @@ def test_config():
 
     :return:
     """
-    assert not create_app().testing
-    assert create_app({"TESTING": True}).testing
+    assert create_app(TestingConfig()).testing
