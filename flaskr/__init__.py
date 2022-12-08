@@ -1,12 +1,12 @@
 from flask import Flask
-from flaskr.config import get_config
+from flaskr.config import BaseConfig
 
 
-def create_app(config=get_config()) -> Flask:
+def create_app(config=BaseConfig()) -> Flask:
     """
     Create and configure the app
 
-    :param config: Config instance
+    :param config: config instance
     :return:
     """
     app = Flask(__name__, instance_relative_config=True)

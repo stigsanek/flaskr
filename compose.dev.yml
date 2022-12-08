@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15.1-alpine
+    env_file:
+      - ./.env.dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  web:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    command: flask run
+    env_file:
+      - ./.env.dev
+    ports:
+      - "5000:5000"
+    restart: always
+    volumes:
+      - .:/app/
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

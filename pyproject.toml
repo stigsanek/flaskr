@@ -5,16 +5,15 @@ description = "The basic blog app built in the Flask tutorial"
 authors = ["stigsanek <alexander.e.egorov@yandex.ru>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "flaskr"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
 flask = "^2.2.2"
 flask-sqlalchemy = "^3.0.2"
+gunicorn = "^20.1.0"
+psycopg2 = "^2.9.5"
 python-dotenv = "^0.21.0"
 
-[tool.poetry.scripts]
-flaskr = "flaskr.scripts.run:main"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.0"

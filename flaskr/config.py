@@ -1,43 +1,18 @@
 import os
-from typing import Union
-
-from dotenv import load_dotenv
 
 
-class Config:
+class BaseConfig:
     """Base config"""
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
+    DEBUG = os.getenv("FLASK_DEBUG", True)
+    SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "dev")
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "FLASK_DATABASE_URL", "sqlite:///flaskr.sqlite"
+    )
 
 
-class ProductionConfig(Config):
-    """Config for production"""
-    DEBUG = False
-    SECRET_KEY = os.getenv("SECRET_KEY")
-
-
-class DevelopmentConfig(Config):
-    """Config for development"""
-    DEBUG = True
-    SECRET_KEY = "dev"
-
-
-class TestingConfig(Config):
+class TestingConfig:
     """Config for testing"""
     TESTING = True
     SECRET_KEY = "test"
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
-
-
-def get_config() -> Union[ProductionConfig, DevelopmentConfig]:
-    """
-    Get config
-
-    :return: config instance
-    """
-    load_dotenv()
-
-    if os.getenv("ENV") == "prod":
-        return ProductionConfig()
-
-    return DevelopmentConfig()
