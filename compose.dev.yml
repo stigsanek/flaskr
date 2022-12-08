@@ -13,7 +13,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile.dev
-    command: flask run
+    command: flask --app flaskr:create_app run --host 0.0.0.0 --port 5000
     env_file:
       - ./.env.dev
     ports:
