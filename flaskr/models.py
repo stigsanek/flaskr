@@ -9,7 +9,7 @@ class User(db.Model):
     """
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.NVARCHAR)
+    password = db.Column(db.VARCHAR)
     posts = db.relationship("Post", backref="user")
 
     def __init__(self, username: str, password: str):
@@ -31,7 +31,7 @@ class Post(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     created = db.Column(db.DateTime, default=datetime.now)
     title = db.Column(db.String(100), nullable=False)
-    body = db.Column(db.NVARCHAR, nullable=False)
+    body = db.Column(db.VARCHAR, nullable=False)
 
     def __init__(self, author_id: int, title: str, body: str):
         """
