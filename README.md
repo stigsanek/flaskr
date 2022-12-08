@@ -48,20 +48,6 @@ It remains to move to the directory and install the dependencies:
 >> poetry install
 ```
 
-### Environment
-
-For the application to work, you need to create a file `.env` in the root of the project:
-
-If you want to enable development mode:
-
-```dotenv
-SECRET_KEY="your_key"
-DATABASE_URL="sqlite:///flaskr.sqlite"
-
-# If you want to enable debug mode
-FLASK_DEBUG=True
-```
-
 Finally, we can move on to using the project functionality!
 
 ## Usage

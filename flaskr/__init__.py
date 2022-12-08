@@ -6,7 +6,7 @@ def create_app(config=BaseConfig()) -> Flask:
     """
     Create and configure the app
 
-    :param config: Config instance
+    :param config: config instance
     :return:
     """
     app = Flask(__name__, instance_relative_config=True)

@@ -4,9 +4,11 @@ import os
 class BaseConfig:
     """Base config"""
     TESTING = False
-    DEBUG = os.getenv("FLASK_DEBUG", False) == "True"
-    SECRET_KEY = os.getenv("SECRET_KEY")
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
+    DEBUG = os.getenv("FLASK_DEBUG", True)
+    SECRET_KEY = os.getenv("SECRET_KEY", "dev")
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "DATABASE_URL", "sqlite:///flaskr.sqlite"
+    )
 
 
 class TestingConfig:
