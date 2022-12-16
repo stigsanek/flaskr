@@ -1,6 +1,6 @@
 # Flaskr
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/stigsanek/flaskr/python-ci)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/stigsanek/flaskr/pyci.yml?branch=main)
 ![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/stigsanek/flaskr)
 ![Code Climate coverage](https://img.shields.io/codeclimate/coverage/stigsanek/flaskr)
 
