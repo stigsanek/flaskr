@@ -108,7 +108,7 @@ FLASK_DATABASE_URL=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@$
 #### Run development mode
 
 ```bash
->> docker-compose -f compose.dev.yml up -d
+>> docker-compose -f compose.dev.yml up -d --build
 
  ...
  ...
@@ -122,7 +122,7 @@ Open [http://localhost:5000](http://localhost:5000) in your browser.
 #### Run production mode
 
 ```bash
->> docker-compose -f compose.prod.yml up -d
+>> docker-compose -f compose.prod.yml up -d --build
 
  ...
  ...
