@@ -2,7 +2,7 @@
 name = "flaskr"
 version = "0.1.0"
 description = "The basic blog app built in the Flask tutorial"
-authors = ["stigsanek <alexander.e.egorov@yandex.ru>"]
+authors = ["stigsanek <stigsanek@yandex.ru>"]
 license = "MIT"
 readme = "README.md"
 
@@ -11,7 +11,7 @@ python = "^3.8"
 flask = "^2.2.2"
 flask-sqlalchemy = "^3.0.2"
 gunicorn = "^20.1.0"
-psycopg2 = "^2.9.5"
+psycopg2-binary = "^2.9.5"
 python-dotenv = "^0.21.0"
 
 
